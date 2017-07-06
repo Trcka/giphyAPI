@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Favorite gifs</title>
+  <style type="text/css">
+    button,
+    div,
+    form,
+    input {
+      margin: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+
+    <div id="gifs"></div>
+
+    <div id="gif-buttons"></div>
+
+    <form>
+      <label for="gif-input">Add a Gif Button Here:</label>
+      <input type="text" id="gif-input"><br>
+      <input id="add-gif" type="submit" value="Add a Gif Button">
+    </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+      var gifs = [];
+
+      function displayGif() {
+
+        var gif = $(this).attr("data-name");
+        var queryURL ="http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag="+name;
+
+        $.ajax({
+          url: queryURL,
+          method: "GET"
+        }).done(function(response) {
+
+
+          var gifDiv = $("<div class='gif'>");
+
+
+
+          var released = response.Released;
+
+
+          var pTwo = $("<p>").text("Released: " + released);
+
+          gifDiv.append(pTwo);
+
+
+        });
+
+      }
+
+      function renderButtons() {
+
+
+        $("#gif-buttons").empty();
+
+
+        for (var i = 0; i < gifs.length; i++) {
+
+
+          var a = $("<button>");
+
+          a.addClass("gif");
+
+          a.attr("data-name", gifs[i]);
+
+          a.text(gifs[i]);
+
+          $("#gif-buttons").append(a);
+        }
+      }
+
+      $("#add-gif").on("click", function(event) {
+        event.preventDefault();
+
+        var gif = $("#gif-input").val().trim();
+
+        gifs.push(gif);
+
+        renderButtons();
+      });
+
+
+      $(document).on("click", ".gif", displayGif);
+
+      renderButtons();
+    </script>
+  </div>
+</body>
+
+</html>
